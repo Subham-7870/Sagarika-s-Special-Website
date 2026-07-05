@@ -875,6 +875,11 @@ button, input {
   
   .contact-card {
     padding: 24px;
+    order: 1;
+  }
+  
+  .info-column {
+    order: 2;
   }
 }
 
