@@ -1101,13 +1101,13 @@ button, input {
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* Make gallery cards have pointer cursor on gallery page */
-#gallery .specialty-card {
+/* Make cards have pointer cursor and hover effects universally */
+.specialty-card {
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#gallery .specialty-card:hover {
+.specialty-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
@@ -1117,8 +1117,8 @@ button, input {
    ========================================================================== */
 .specialty-price-badge {
   position: absolute;
-  top: var(--spacing-xs);
-  right: var(--spacing-xs);
+  top: 16px;
+  left: 16px;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   padding: 4px 10px;

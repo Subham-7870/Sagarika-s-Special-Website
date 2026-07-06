@@ -129,9 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 8. Gallery Lightbox Modal Creation and Handling
-  const galleryPage = document.getElementById('gallery');
-  if (galleryPage) {
+  // 8. Gallery & Home Lightbox Modal Creation and Handling
+  const specialtiesGrid = document.querySelector('.grid-specialties');
+  if (specialtiesGrid) {
     // Dynamically inject the lightbox modal markup
     const modal = document.createElement('div');
     modal.id = 'lightbox-modal';
