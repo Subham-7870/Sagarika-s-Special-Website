@@ -26,6 +26,13 @@
       <div class="loader-spinner"></div>
     </div>
   </div>
+  <script>
+    try {
+      if (sessionStorage.getItem('ss_preloader_shown')) {
+        document.getElementById('preloader').style.display = 'none';
+      }
+    } catch (e) {}
+  </script>
 
   <!-- Navigation Bar -->
   <nav class="navbar" id="main-nav">
@@ -207,6 +214,6 @@
   </footer>
 
   <!-- Link script -->
-  <script src="./js/script.js?v=3"></script>
+  <script src="./js/script.js?v=4"></script>
 </body>
 </html>

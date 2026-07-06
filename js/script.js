@@ -112,18 +112,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// 4. Fade out preloader when page is fully loaded (all images, stylesheets, etc.)
+// 6. Fade out preloader when page is fully loaded (all images, stylesheets, etc.)
 const hidePreloader = () => {
   const preloader = document.getElementById('preloader');
   if (preloader && !preloader.classList.contains('fade-out')) {
     preloader.classList.add('fade-out');
+    try {
+      sessionStorage.setItem('ss_preloader_shown', 'true');
+    } catch (e) {
+      console.warn('sessionStorage is not accessible:', e);
+    }
   }
 };
 
-// Fade out with a pleasant delay (e.g. 1.2s) after load completes so the animations can play beautifully
+// Fade out with a pleasant delay (e.g. 1.2s) after load completes
 window.addEventListener('load', () => {
-  setTimeout(hidePreloader, 1200);
+  let delay = 1200;
+  try {
+    if (sessionStorage.getItem('ss_preloader_shown')) {
+      delay = 0; // Hide instantly if already shown in this session
+    }
+  } catch (e) {}
+  
+  setTimeout(hidePreloader, delay);
 });
 
 // Fallback: hide preloader after 3 seconds anyway in case window load is delayed or blocked
-setTimeout(hidePreloader, 3000);
+let fallbackDelay = 3000;
+try {
+  if (sessionStorage.getItem('ss_preloader_shown')) {
+    fallbackDelay = 0; // Hide instantly if already shown in this session
+  }
+} catch (e) {}
+setTimeout(hidePreloader, fallbackDelay);
