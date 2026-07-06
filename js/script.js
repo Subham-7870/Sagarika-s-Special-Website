@@ -67,6 +67,49 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // 4. Highlight active page link in nav bar
+  const currentPath = window.location.pathname;
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+    const cleanHref = href.replace('./', '');
+    const cleanPath = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+    
+    if (
+      (cleanPath === '' && cleanHref === 'index.html') ||
+      (cleanPath === 'index.html' && cleanHref === 'index.html') ||
+      (cleanPath && cleanHref && cleanPath.includes(cleanHref))
+    ) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+
+  // 5. WhatsApp Order Form message generator
+  const orderForm = document.getElementById('whatsapp-order-form');
+  if (orderForm) {
+    orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const occasion = document.getElementById('order-occasion').value;
+      const flavor = document.getElementById('order-flavor').value || 'Any flavor';
+      const weight = document.getElementById('order-weight').value;
+      const notes = document.getElementById('order-notes').value || 'No special requirements';
+      
+      const baseMessage = `Hello Sagarika's Special! I would like to inquire about a custom cake:\n\n` +
+                          `* Occasion: ${occasion}\n` +
+                          `* Flavor: ${flavor}\n` +
+                          `* Weight: ${weight}\n` +
+                          `* Custom Details/Notes: ${notes}`;
+      
+      const encodedMessage = encodeURIComponent(baseMessage);
+      const whatsappUrl = `https://wa.me/917008875538?text=${encodedMessage}`;
+      
+      window.open(whatsappUrl, '_blank');
+    });
+  }
 });
 
 // 4. Fade out preloader when page is fully loaded (all images, stylesheets, etc.)
