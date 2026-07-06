@@ -608,6 +608,15 @@ button, input {
 
 .specialty-desc {
   color: var(--color-on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.specialty-price-text {
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  color: var(--color-tertiary);
+  font-size: 14px;
+  display: block;
 }
 
 .view-more-container {
@@ -1149,8 +1158,8 @@ button, input {
   animation: bubblePop 0.2s ease-out;
 }
 
-/* Arrow pointing upwards to the photo */
-.detail-bubble::before {
+/* Arrow pointing upwards to the photo (Mobile layout) */
+.detail-bubble.arrow-top::before {
   content: '';
   position: absolute;
   top: -8px;
@@ -1163,7 +1172,7 @@ button, input {
   z-index: 2001;
 }
 
-.detail-bubble::after {
+.detail-bubble.arrow-top::after {
   content: '';
   position: absolute;
   top: -9px;
@@ -1172,6 +1181,60 @@ button, input {
   border-width: 0 8px 8px 8px;
   border-style: solid;
   border-color: transparent transparent var(--color-outline-variant) transparent;
+  display: block;
+  z-index: 2000;
+}
+
+/* Arrow pointing left (Desktop, bubble on the right of photo) */
+.detail-bubble.arrow-left::before {
+  content: '';
+  position: absolute;
+  top: var(--arrow-top, 50%);
+  left: -8px;
+  transform: translateY(-50%);
+  border-width: 8px 8px 8px 0;
+  border-style: solid;
+  border-color: transparent var(--color-surface) transparent transparent;
+  display: block;
+  z-index: 2001;
+}
+
+.detail-bubble.arrow-left::after {
+  content: '';
+  position: absolute;
+  top: var(--arrow-top, 50%);
+  left: -9px;
+  transform: translateY(-50%);
+  border-width: 8px 8px 8px 0;
+  border-style: solid;
+  border-color: transparent var(--color-outline-variant) transparent transparent;
+  display: block;
+  z-index: 2000;
+}
+
+/* Arrow pointing right (Desktop, bubble on the left of photo) */
+.detail-bubble.arrow-right::before {
+  content: '';
+  position: absolute;
+  top: var(--arrow-top, 50%);
+  right: -8px;
+  transform: translateY(-50%);
+  border-width: 8px 0 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--color-surface);
+  display: block;
+  z-index: 2001;
+}
+
+.detail-bubble.arrow-right::after {
+  content: '';
+  position: absolute;
+  top: var(--arrow-top, 50%);
+  right: -9px;
+  transform: translateY(-50%);
+  border-width: 8px 0 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--color-outline-variant);
   display: block;
   z-index: 2000;
 }
@@ -1208,17 +1271,19 @@ button, input {
 
 .bubble-img-container {
   width: 100%;
-  height: 150px;
+  height: 180px;
   border-radius: var(--rounded-xl);
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
+  background-color: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
 }
 
 .bubble-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

@@ -156,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const price = card.getAttribute('data-price') || 'Contact for pricing';
         
         const imgSrc = img ? img.src : '';
+        const detailImgSrc = card.getAttribute('data-detail-img') || imgSrc;
         const tagText = tag ? tag.textContent : 'Custom';
         const titleText = title ? title.textContent : 'Custom Cake';
         const descText = desc ? desc.textContent : '';
@@ -168,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
           </button>
           <div class="bubble-img-container">
-            <img src="${imgSrc}" class="bubble-img" alt="${titleText}">
+            <img src="${detailImgSrc}" class="bubble-img" alt="${titleText}">
           </div>
           <div class="bubble-info">
             <span class="bubble-tag">${tagText}</span>
@@ -188,26 +189,52 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = card.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        const viewportWidth = window.innerWidth;
         
         const bubbleWidth = 345;
-        // Position directly below card with a 12px gap for the arrow
-        const bubbleTop = rect.top + scrollTop + rect.height + 12;
-        let bubbleLeft = rect.left + scrollLeft + (rect.width - bubbleWidth) / 2;
+        let bubbleTop = 0;
+        let bubbleLeft = 0;
+        let arrowClass = '';
         
-        // Ensure popover stays on screen horizontally
-        const viewportWidth = window.innerWidth;
-        if (bubbleLeft < 10) bubbleLeft = 10;
-        if (bubbleLeft + bubbleWidth > viewportWidth - 10) {
-          bubbleLeft = viewportWidth - bubbleWidth - 10;
+        if (viewportWidth > 768) {
+          // Desktop: Position adjacent to the card (left or right)
+          const spaceOnRight = viewportWidth - (rect.right + 16);
+          const spaceOnLeft = rect.left - 16;
+          
+          bubbleTop = rect.top + scrollTop;
+          
+          if (spaceOnRight >= bubbleWidth || spaceOnRight >= spaceOnLeft) {
+            bubbleLeft = rect.right + 16;
+            arrowClass = 'arrow-left';
+          } else {
+            bubbleLeft = rect.left - bubbleWidth - 16;
+            arrowClass = 'arrow-right';
+          }
+          
+          // Align arrow vertically to the vertical center of the card
+          const cardCenterY = rect.top + scrollTop + rect.height / 2;
+          const arrowTop = cardCenterY - bubbleTop;
+          bubble.style.setProperty('--arrow-top', `${arrowTop}px`);
+        } else {
+          // Mobile: Position directly below the card, centered
+          bubbleTop = rect.top + scrollTop + rect.height + 12;
+          bubbleLeft = rect.left + scrollLeft + (rect.width - bubbleWidth) / 2;
+          arrowClass = 'arrow-top';
+          
+          if (bubbleLeft < 10) bubbleLeft = 10;
+          if (bubbleLeft + bubbleWidth > viewportWidth - 10) {
+            bubbleLeft = viewportWidth - bubbleWidth - 10;
+          }
+          
+          // Align arrow horizontally to the horizontal center of the card
+          const cardMiddleX = rect.left + scrollLeft + rect.width / 2;
+          const arrowLeft = cardMiddleX - bubbleLeft;
+          bubble.style.setProperty('--arrow-left', `${arrowLeft}px`);
         }
         
-        // Align arrow pointer exactly to card center
-        const cardMiddleX = rect.left + scrollLeft + rect.width / 2;
-        const arrowLeft = cardMiddleX - bubbleLeft;
-        
+        bubble.classList.add(arrowClass);
         bubble.style.top = `${bubbleTop}px`;
         bubble.style.left = `${bubbleLeft}px`;
-        bubble.style.setProperty('--arrow-left', `${arrowLeft}px`);
 
         // Prevent clicks inside the bubble from bubbling up
         bubble.addEventListener('click', (evt) => {
