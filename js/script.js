@@ -129,49 +129,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 8. Gallery & Home Lightbox Modal Creation and Handling
+  // 8. Gallery & Home Detail Bubble Creation and Handling
   const specialtiesGrid = document.querySelector('.grid-specialties');
   if (specialtiesGrid) {
-    // Dynamically inject the lightbox modal markup
-    const modal = document.createElement('div');
-    modal.id = 'lightbox-modal';
-    modal.className = 'lightbox-modal';
-    modal.innerHTML = `
-      <div class="lightbox-content">
-        <button class="lightbox-close" id="lightbox-close" aria-label="Close modal">
-          <span class="material-symbols-outlined">close</span>
-        </button>
-        <div class="lightbox-img-wrapper">
-          <img id="lightbox-img" class="lightbox-img" alt="Custom cake design">
-        </div>
-        <div class="lightbox-info">
-          <span id="lightbox-tag" class="lightbox-tag"></span>
-          <h2 id="lightbox-title" class="lightbox-title font-display-md"></h2>
-          <span id="lightbox-price" class="lightbox-price"></span>
-          <p id="lightbox-desc" class="lightbox-desc font-body-md"></p>
-          <div class="lightbox-veg-banner">
-            <span class="material-symbols-outlined lightbox-veg-icon">eco</span>
-            <span>All our cakes are 100% Veg (Eggless)</span>
-          </div>
-          <button id="lightbox-cta" class="btn btn-primary" style="margin-top: 10px; width: 100%; justify-content: center; border: 0; cursor: pointer;">
-            Order This Theme
-          </button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-
-    const modalImg = document.getElementById('lightbox-img');
-    const modalTag = document.getElementById('lightbox-tag');
-    const modalTitle = document.getElementById('lightbox-title');
-    const modalPrice = document.getElementById('lightbox-price');
-    const modalDesc = document.getElementById('lightbox-desc');
-    const modalClose = document.getElementById('lightbox-close');
-    const modalCta = document.getElementById('lightbox-cta');
-    
     const cards = document.querySelectorAll('.specialty-card');
+    
+    const closeAllBubbles = () => {
+      const existingBubbles = document.querySelectorAll('.detail-bubble');
+      existingBubbles.forEach(b => b.remove());
+    };
+
     cards.forEach(card => {
-      card.addEventListener('click', () => {
+      // Set relative position on card dynamically to anchor the bubble
+      card.style.position = 'relative';
+
+      card.addEventListener('click', (e) => {
+        // If we clicked inside an already open bubble, do nothing
+        if (e.target.closest('.detail-bubble')) return;
+        
+        e.stopPropagation();
+        closeAllBubbles();
+
         const img = card.querySelector('.specialty-img');
         const tag = card.querySelector('.specialty-tag');
         const title = card.querySelector('.specialty-title');
@@ -181,31 +159,62 @@ document.addEventListener('DOMContentLoaded', () => {
         const flavor = card.getAttribute('data-flavor') || '';
         const price = card.getAttribute('data-price') || 'Contact for pricing';
         
-        if (img) modalImg.src = img.src.split('?')[0]; // strip version tags
-        if (img) modalImg.alt = img.alt;
-        if (tag) modalTag.textContent = tag.textContent;
-        if (title) modalTitle.textContent = title.textContent;
-        if (price) modalPrice.textContent = price;
-        if (desc) modalDesc.textContent = desc.textContent;
-        
-        modalCta.onclick = () => {
+        const imgSrc = img ? img.src : '';
+        const tagText = tag ? tag.textContent : 'Custom';
+        const titleText = title ? title.textContent : 'Custom Cake';
+        const descText = desc ? desc.textContent : '';
+
+        // Create the detail bubble element
+        const bubble = document.createElement('div');
+        bubble.className = 'detail-bubble';
+        bubble.innerHTML = `
+          <button class="bubble-close" aria-label="Close details">
+            <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+          </button>
+          <div class="bubble-img-container">
+            <img src="${imgSrc}" class="bubble-img" alt="${titleText}">
+          </div>
+          <div class="bubble-info">
+            <span class="bubble-tag">${tagText}</span>
+            <h3 class="bubble-title font-headline-sm">${titleText}</h3>
+            <div class="bubble-meta">
+              <span class="bubble-price">${price}</span>
+              <span class="bubble-weight">• Min Weight: 1 kg</span>
+            </div>
+            <p class="bubble-desc font-body-sm">${descText}</p>
+            <button class="bubble-cta-btn btn btn-primary btn-sm" style="border: 0;">
+              Order This Theme
+            </button>
+          </div>
+        `;
+
+        // Prevent clicks inside the bubble from bubbling up to the card
+        bubble.addEventListener('click', (evt) => {
+          evt.stopPropagation();
+        });
+
+        // Close button click listener
+        const closeBtn = bubble.querySelector('.bubble-close');
+        closeBtn.addEventListener('click', (evt) => {
+          evt.stopPropagation();
+          bubble.remove();
+        });
+
+        // CTA button click listener
+        const ctaBtn = bubble.querySelector('.bubble-cta-btn');
+        ctaBtn.addEventListener('click', (evt) => {
+          evt.stopPropagation();
           const redirectUrl = `./order.html?occasion=${encodeURIComponent(occasion)}&flavor=${encodeURIComponent(flavor)}`;
           window.location.href = redirectUrl;
-        };
-        
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        });
+
+        card.appendChild(bubble);
       });
     });
-    
-    const closeModal = () => {
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
-    };
-    
-    modalClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
+
+    // Close all bubbles when clicking anywhere outside
+    document.addEventListener('click', () => {
+      closeAllBubbles();
     });
   }
 });
