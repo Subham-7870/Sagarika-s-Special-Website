@@ -140,11 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     cards.forEach(card => {
-      // Set relative position on card dynamically to anchor the bubble
-      card.style.position = 'relative';
-
       card.addEventListener('click', (e) => {
-        // If we clicked inside an already open bubble, do nothing
         if (e.target.closest('.detail-bubble')) return;
         
         e.stopPropagation();
@@ -188,7 +184,32 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
 
-        // Prevent clicks inside the bubble from bubbling up to the card
+        // Calculate absolute position relative to document
+        const rect = card.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
+        const bubbleWidth = 345;
+        // Position directly below card with a 12px gap for the arrow
+        const bubbleTop = rect.top + scrollTop + rect.height + 12;
+        let bubbleLeft = rect.left + scrollLeft + (rect.width - bubbleWidth) / 2;
+        
+        // Ensure popover stays on screen horizontally
+        const viewportWidth = window.innerWidth;
+        if (bubbleLeft < 10) bubbleLeft = 10;
+        if (bubbleLeft + bubbleWidth > viewportWidth - 10) {
+          bubbleLeft = viewportWidth - bubbleWidth - 10;
+        }
+        
+        // Align arrow pointer exactly to card center
+        const cardMiddleX = rect.left + scrollLeft + rect.width / 2;
+        const arrowLeft = cardMiddleX - bubbleLeft;
+        
+        bubble.style.top = `${bubbleTop}px`;
+        bubble.style.left = `${bubbleLeft}px`;
+        bubble.style.setProperty('--arrow-left', `${arrowLeft}px`);
+
+        // Prevent clicks inside the bubble from bubbling up
         bubble.addEventListener('click', (evt) => {
           evt.stopPropagation();
         });
@@ -208,14 +229,16 @@ document.addEventListener('DOMContentLoaded', () => {
           window.location.href = redirectUrl;
         });
 
-        card.appendChild(bubble);
+        document.body.appendChild(bubble);
       });
     });
 
-    // Close all bubbles when clicking anywhere outside
+    // Close all bubbles when clicking anywhere outside, resizing, or scrolling
     document.addEventListener('click', () => {
       closeAllBubbles();
     });
+    window.addEventListener('resize', closeAllBubbles);
+    window.addEventListener('scroll', closeAllBubbles);
   }
 });
 
