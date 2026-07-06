@@ -1082,13 +1082,32 @@ button, input {
     gap: var(--spacing-md);
   }
   
-  #home .grid-specialties .specialty-card:last-child {
-    grid-column: span 2;
+  /* Flexbox-based 2-column layout to center the 5th card symmetrically */
+  #home .grid-specialties {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+  }
+  
+  #home .grid-specialties .specialty-card {
+    flex: 0 1 calc(50% - var(--spacing-md) / 2);
+    max-width: calc(50% - var(--spacing-md) / 2);
   }
 }
 
 @media (max-width: 768px) {
   .about-features {
     grid-template-columns: 1fr;
+  }
+  
+  /* Make sure gap and basis match mobile specifications on homepage grid */
+  #home .grid-specialties {
+    gap: var(--spacing-sm);
+  }
+  
+  #home .grid-specialties .specialty-card {
+    flex: 0 1 calc(50% - var(--spacing-sm) / 2);
+    max-width: calc(50% - var(--spacing-sm) / 2);
   }
 }
