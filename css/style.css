@@ -1276,7 +1276,7 @@ button, input {
 
 .bubble-img-container {
   width: 100%;
-  height: 180px;
+  height: 240px;
   border-radius: var(--rounded-xl);
   overflow: hidden;
   position: relative;
