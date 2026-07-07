@@ -566,6 +566,7 @@ button, input {
   overflow: hidden;
   margin-bottom: var(--spacing-sm);
   position: relative;
+  width: 100%;
 }
 
 .specialty-img {
@@ -1350,7 +1351,7 @@ button, input {
 }
 
 /* Mobile Portrait Symmetrical Grid & Centering */
-@media (max-width: 576px) {
+@media (max-width: 600px) {
   .grid-specialties {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
@@ -1358,7 +1359,6 @@ button, input {
   
   .specialty-card {
     text-align: center;
-    align-items: center;
     padding: var(--spacing-md);
   }
   
