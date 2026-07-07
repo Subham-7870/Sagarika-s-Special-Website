@@ -1354,13 +1354,14 @@ button, input {
   flex-shrink: 0;
 }
 
-/* Mobile Portrait 2-Column Square Image Collage (No text details inside grid cells) */
+/* Mobile Portrait 2-Column Collage (No text details, card boxes sized exactly to photo dimensions) */
 @media (max-width: 600px) {
   #home .grid-specialties,
   #gallery .grid-specialties,
   .grid-specialties {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-sm);
+    align-items: start;
   }
   
   .specialty-card {
@@ -1368,6 +1369,7 @@ button, input {
     border: none;
     background: transparent;
     box-shadow: none;
+    height: max-content;
   }
   
   .specialty-card > div:last-child {
@@ -1375,21 +1377,18 @@ button, input {
   }
   
   .specialty-img-container {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: auto;
     margin-bottom: 0;
     width: 100%;
+    height: auto;
     border-radius: var(--rounded-2xl);
     border: 1px solid var(--color-outline-variant);
-    background-color: var(--color-surface-container-low);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
   }
   
   .specialty-img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
+    display: block;
   }
 }
