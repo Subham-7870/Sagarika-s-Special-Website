@@ -1348,3 +1348,21 @@ button, input {
   margin-top: 4px;
   flex-shrink: 0;
 }
+
+/* Mobile Portrait Symmetrical Grid & Centering */
+@media (max-width: 576px) {
+  .grid-specialties {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .specialty-card {
+    text-align: center;
+    align-items: center;
+    padding: var(--spacing-md);
+  }
+  
+  .specialty-desc {
+    margin-bottom: var(--spacing-xs);
+  }
+}
