@@ -808,6 +808,8 @@ button, input {
     line-height: 52px;
   }
   
+  #home .grid-specialties,
+  #gallery .grid-specialties,
   .grid-specialties {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md);
@@ -866,6 +868,8 @@ button, input {
   }
   
   /* Specialty layout - fit side-by-side horizontally */
+  #home .grid-specialties,
+  #gallery .grid-specialties,
   .grid-specialties {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-sm);
@@ -1352,6 +1356,8 @@ button, input {
 
 /* Mobile Portrait 2-Column Square Image Collage (No text details inside grid cells) */
 @media (max-width: 600px) {
+  #home .grid-specialties,
+  #gallery .grid-specialties,
   .grid-specialties {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-sm);
