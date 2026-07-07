@@ -1440,7 +1440,14 @@ button, input {
   }
   
   .detail-bubble .bubble-desc {
-    display: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    color: var(--color-on-surface-variant);
   }
   
   .detail-bubble .bubble-cta-btn {
